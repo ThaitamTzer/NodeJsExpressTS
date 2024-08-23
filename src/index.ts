@@ -14,14 +14,14 @@ app.use(express.static(path.join(__dirname, "./public")));
 
 // timeplate engine
 app.engine(
-  "hds",
+  "hbs",
   engine({
-    extname: ".hds",
+    extname: ".hbs",
     layoutsDir: path.join(__dirname, "./resources/views/layouts"),
     partialsDir: path.join(__dirname, "./resources/views/partials"),
   })
 );
-app.set("view engine", "hds");
+app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "./resources/views"));
 
 app.get("/", (req, res) => {
