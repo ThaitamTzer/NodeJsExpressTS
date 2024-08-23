@@ -30,6 +30,11 @@ app.get("/news", (req, res) => {
   res.render("news");
 });
 
+app.get("/search", (req, res) => {
+  res.render("search");
+  console.log(req.query);
+});
+
 app.listen(port, () => {
   console.log(`Server is running on localhost:${port}`);
 });
