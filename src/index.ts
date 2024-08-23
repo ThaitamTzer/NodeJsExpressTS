@@ -6,7 +6,13 @@ import { engine } from "express-handlebars";
 const app = express();
 const port = 3030;
 
+// logger
 app.use(morgan("combined"));
+
+// static file
+app.use(express.static(path.join(__dirname, "./public")));
+
+// timeplate engine
 app.engine(
   "hds",
   engine({
