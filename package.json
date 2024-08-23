@@ -1,0 +1,36 @@
+{
+  "name": "nodejsf8",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build",
+    "start": "node ./dist/index.js",
+    "dev": "nodemon ./src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThaitamTzer/NodeJsExpressTS.git"
+  },
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "ts"
+  ],
+  "author": "Thai Tam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThaitamTzer/NodeJsExpressTS/issues"
+  },
+  "homepage": "https://github.com/ThaitamTzer/NodeJsExpressTS#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
