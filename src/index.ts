@@ -1,31 +1,35 @@
-import express from "express";
-import morgan from "morgan";
-import path from "path";
-import { engine } from "express-handlebars";
+import express from 'express'
+import morgan from 'morgan'
+import path from 'path'
+import { engine } from 'express-handlebars'
+const db = require('./config/db')
 
-const route = require("./routes");
+const route = require('./routes')
 
-const app = express();
-const port = 3030;
+// Connect to DB
+db.connect()
+
+const app = express()
+const port = 3030
 
 // logger
 // app.use(morgan("combined"));
 
 // static file
-app.use(express.static(path.join(__dirname, "./public")));
+app.use(express.static(path.join(__dirname, './public')))
 
 // timeplate engine
 app.engine(
-  "hbs",
+  'hbs',
   engine({
-    extname: ".hbs",
-  })
-);
-app.set("view engine", "hbs");
-app.set("views", path.join(__dirname, "./resources/views"));
+    extname: '.hbs',
+  }),
+)
+app.set('view engine', 'hbs')
+app.set('views', path.join(__dirname, './resources/views'))
 
-route(app);
+route(app)
 
 app.listen(port, () => {
-  console.log(`Server is running on localhost:${port}`);
-});
+  console.log(`Server is running on localhost:${port}`)
+})
