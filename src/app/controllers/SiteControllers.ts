@@ -1,18 +1,18 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express'
 
 type ReqRes = {
-  req: Request;
-  res: Response;
-};
+  req: Request
+  res: Response
+}
 
 class SiteControllers {
   homepage({ req, res }: ReqRes) {
-    res.render("home");
+    res.render('home')
   }
 
   search({ req, res }: ReqRes) {
-    res.render("search");
+    res.render('search')
   }
 }
 
-export default new SiteControllers();
+export default new SiteControllers()
