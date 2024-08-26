@@ -1,8 +1,9 @@
-import express from "express";
-const router = express.Router();
-import siteController from "../app/controllers/SiteControllers";
+import express from 'express'
+const router = express.Router()
+import siteController from '../app/controllers/SiteControllers'
 
-router.use("/search", siteController.search);
-router.use("/", siteController.homepage);
+router.use('/search', siteController.search)
 
-module.exports = router;
+router.use('/', siteController.homepage)
+
+module.exports = router

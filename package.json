@@ -7,7 +7,8 @@
     "build": "tsc --build",
     "watch": "node-sass -w src/resources/scss/ -o src/public/css/",
     "start": "node ./dist/index.js",
-    "dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,11 @@
   },
   "homepage": "https://github.com/ThaitamTzer/NodeJsExpressTS#readme",
   "description": "",
+  "lint-staged": {
+    "src/**/*.{ts,json,scss}": [
+      "prettier --single-quote --trailing-comma all --tab-width 2 --no-semi --end-of-line lf --write"
+    ]
+  },
   "dependencies": {
     "express": "^4.19.2",
     "express-handlebars": "^8.0.1"
@@ -35,9 +41,12 @@
     "@types/minimist": "^1.2.5",
     "@types/morgan": "^1.9.9",
     "@types/node-sass": "^4.11.7",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.9",
     "morgan": "^1.10.0",
     "node-sass": "^9.0.0",
     "nodemon": "^3.1.4",
+    "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   }

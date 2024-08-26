@@ -1,18 +1,22 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express'
 
 type ReqRes = {
-  req: Request;
-  res: Response;
-};
+  req: Request
+  res: Response
+}
 
 class NewsControllers {
   news({ req, res }: ReqRes) {
-    res.render("news");
+    res.render('news')
+  }
+
+  hihi({ req, res }: ReqRes) {
+    res.send()
   }
 
   detailnews({ req, res }: ReqRes) {
-    res.send("detailnews");
+    res.send('detailnews')
   }
 }
 
-export default new NewsControllers();
+export default new NewsControllers()
