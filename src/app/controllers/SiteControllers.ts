@@ -1,6 +1,4 @@
 import { Request, Response, NextFunction } from 'express'
-import { Course } from '../models/Course'
-import { mongooseToArr } from '../../utils' // Corrected import
 
 type ReqRes = {
   req: Request
@@ -9,12 +7,16 @@ type ReqRes = {
 }
 
 class SiteControllers {
-  async homepage({ req, res, next }: ReqRes) {
-    Course.find({})
-      .then((courses) =>
-        res.render('home', { courses: mongooseToArr(courses) }),
-      )
-      .catch(next)
+  // async homepage({ req, res, next }: ReqRes) {
+  //   Course.find({})
+  //     .then((courses) =>
+  //       res.render("home", { courses: mongooseToArr(courses) })
+  //     )
+  //     .catch(next);
+  // }
+
+  homepage({ req, res, next }: ReqRes) {
+    res.render('home')
   }
 
   search({ req, res }: ReqRes) {
