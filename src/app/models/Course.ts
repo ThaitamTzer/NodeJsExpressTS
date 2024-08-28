@@ -1,13 +1,16 @@
 import ICourse from '../interface/Course'
 import mongoose, { Schema } from 'mongoose'
+const slug = require('mongoose-slug-updater')
+mongoose.plugin(slug)
 
 const CourseSchema = new Schema<ICourse>(
   {
     name: { type: String, required: true },
-    descreption: { type: String, required: true },
-    image: { type: String, required: true },
-    createAt: { type: Date, default: Date.now },
-    updateAt: { type: Date, default: Date.now },
+    description: { type: String, maxlength: 255 },
+    image: { type: String, maxlength: 255 },
+    videoId: { type: String, maxlength: 255 },
+    level: { type: String, maxlength: 255 },
+    slug: { type: String, slug: 'name', unique: true },
   },
   {
     timestamps: true,

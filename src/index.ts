@@ -17,6 +17,8 @@ const port = 3030
 
 // static file
 app.use(express.static(path.join(__dirname, './public')))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 // timeplate engine
 app.engine(

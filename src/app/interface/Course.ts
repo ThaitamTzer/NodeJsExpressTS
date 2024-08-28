@@ -1,9 +1,10 @@
 interface ICourse {
   name: string
-  descreption: string
+  description: string
   image: string
-  createAt: Date
-  updateAt: Date
+  videoId: string
+  level: string
+  slug: string
 }
 
 export default ICourse

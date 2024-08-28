@@ -21,6 +21,23 @@ class CoursesControllers {
       }
     })
   }
+
+  //[GET] /courses/create
+  create(req: Request, res: Response) {
+    res.render('create')
+  }
+
+  //[POST] /courses/store
+  store(req: Request, res: Response) {
+    // const formData = req.body;
+    // formData.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`;
+    // const course = new Course(formData);
+    // course.save().then(() => res.json({ message: "Success" }));
+    const formData = req.body
+    formData.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`
+    const course = new Course(formData)
+    course.save().then(() => res.redirect('/courses'))
+  }
 }
 
 export default new CoursesControllers()
