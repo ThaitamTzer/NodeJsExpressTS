@@ -2,6 +2,7 @@ import express from 'express'
 import morgan from 'morgan'
 import path from 'path'
 import { engine } from 'express-handlebars'
+const methodOverride = require('method-override')
 const db = require('./config/db')
 
 const route = require('./routes')
@@ -19,12 +20,16 @@ const port = 3030
 app.use(express.static(path.join(__dirname, './public')))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(methodOverride('_method'))
 
 // timeplate engine
 app.engine(
   'hbs',
   engine({
     extname: '.hbs',
+    helpers: {
+      sum: (a: number, b: number) => a + b,
+    },
   }),
 )
 app.set('view engine', 'hbs')
