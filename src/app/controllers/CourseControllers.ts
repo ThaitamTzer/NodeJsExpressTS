@@ -58,6 +58,11 @@ class CoursesControllers {
       res.redirect('/courses/list'),
     )
   }
+
+  //[DELETE] /courses/:id
+  delete(req: Request, res: Response) {
+    Course.deleteOne({ _id: req.params.id }).then(() => res.redirect('back'))
+  }
 }
 
 export default new CoursesControllers()
