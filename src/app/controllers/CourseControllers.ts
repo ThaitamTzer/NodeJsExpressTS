@@ -91,6 +91,29 @@ class CoursesControllers {
       res.render('courses/trash', { courses: mongooseToArr(courses) }),
     )
   }
+
+  //[POST] /courses/handle-form-actions
+  handleFormActions(req: Request, res: Response) {
+    switch (req.body.action) {
+      case 'delete':
+        Course.delete({ _id: { $in: req.body.courseIds } }).then(() =>
+          res.redirect('back'),
+        )
+        break
+      case 'force-delete':
+        Course.deleteMany({ _id: { $in: req.body.courseIds } }).then(() =>
+          res.redirect('back'),
+        )
+        break
+      case 'restore':
+        Course.restore({ _id: { $in: req.body.courseIds } }).then(() =>
+          res.redirect('back'),
+        )
+        break
+      default:
+        res.json({ message: 'Action invalid' })
+    }
+  }
 }
 
 export default new CoursesControllers()

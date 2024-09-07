@@ -1,9 +1,26 @@
-<div class="mt-4">
+<form class="mt-4 form-handle-action" method="POST" action="/courses/handle-form-actions">
   <h1>Danh sách khoá học</h1>
   <a href="/courses/list" class="btn btn-primary">Quay về trang chủ</a>
+   <div class="mt-4 d-flex form-action-control">
+    <div class="form-check">
+      <input class="form-check-input"  type="checkbox" value="" id="checkboxAll">
+      <label class="form-check-label" for="checkboxAll">
+        Chọn tất cả
+      </label>
+    </div>
+    <div class="select-option">
+      <select class="form-select" aria-label="Default select example" required name="action">
+        <option value="" selected>Chọn hành động</option>
+        <option value="force-delete">Xóa vĩnh viễn</option>
+        <option value="restore">Khôi phục</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary" disabled id="btn-submit-action-form">Thực hiện</button>
+  </div>
   <table class="table mt-4">
     <thead>
       <tr>
+        <th scope="col"></th>
         <th scope="col">#</th>
         <th scope="col">Tên khoá học</th>
         <th scope="col">Trình độ</th>
@@ -14,6 +31,9 @@
       {{#if courses.length}}
         {{#each courses}}
           <tr>
+            <th scope="row">
+              <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}" id="checkboxCourse">
+            </th>
             <th scope="row">{{sum @index 1}}</th>
             <td>{{this.name}}</td>
             <td>{{this.level}}</td>
@@ -21,8 +41,8 @@
             <td>
               <a 
                 type="submit"
-                class="btn btn-primary"
                 data-bs-toggle="modal"
+                class="btn btn-primary"
                 data-bs-id={{this._id}}
                 data-bs-target="#restoreModal"
               >Khôi phục</a>
@@ -38,13 +58,13 @@
         {{/each}}
         {{else}}
           <tr>
-            <td colspan="5" class="text-center">Sọt rác trống <a href="/courses/list">Danh sách khóa học</a></td>
+            <td colspan="5" class="text-center">Thùng rác trống <a href="/courses/list">Danh sách khóa học</a></td>
           </tr>
       {{/if}}
       
     </tbody>
   </table>
-</div>
+</form>
 
 <!-- Modal -->
 <div
@@ -113,14 +133,87 @@
   </div>
 </div>
 
+<div
+  class="modal fade"
+  id="forceDeleteModalMany"
+  tabindex="-1"
+  aria-labelledby="forceDeleteModalManyLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="forceDeleteModalManyLabel">Bạn sẽ xóa vĩnh viễn các khóa học này ?</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>Các khóa học sẽ được xóa khỏi hệ thống</p>
+      </div>
+      <div class="modal-footer">
+        <button id="forceDeleteManyCourse" type="button" class="btn btn-danger">Xóa</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <form class="mt-4" id="confirm-Restore" method="POST" ></form>
-<form class="mt-4" id="confirm-ForceDelete" method="POST" ></form>
+<form class="mt-4" id="confirm-ForceDelete" method="POST"></form>
 
 <script>
+  const form = document.querySelector('.form-handle-action')
   const restoreModal = document.getElementById('restoreModal') 
   const forceDeleteModal = document.getElementById('forceDeleteModal')
   const buttonrestoreCourse = document.getElementById('restoreCourse')
   const buttonforceDeleteCourse = document.getElementById('forceDeleteCourse')
+  const checkboxAll = document.getElementById('checkboxAll')
+  const checkboxCourse = document.querySelectorAll('#checkboxCourse')
+  const btnSubmitActionForm = document.getElementById('btn-submit-action-form')
+  const selectAction = document.querySelector('select[name="action"]')
+  const formForceDeleteMany = document.getElementById('confirm-ForceDeleteMany')
+  const buttonForceDeleteManyCourse = document.getElementById('forceDeleteManyCourse')
+
+  const handleButtonSubmitActionForm = () => {
+    const isChecked = Array.from(checkboxCourse).some(checkbox => checkbox.checked)
+    btnSubmitActionForm.disabled = !isChecked
+  }
+
+  checkboxAll.onchange = () => {
+    checkboxCourse.forEach(checkbox => {
+      checkbox.checked = checkboxAll.checked
+    })
+    handleButtonSubmitActionForm()
+  }
+
+  checkboxCourse.forEach(checkbox => {
+    checkbox.onchange = () => {
+      const isAllChecked = Array.from(checkboxCourse).every(checkbox => checkbox.checked)
+      checkboxAll.checked = isAllChecked
+      handleButtonSubmitActionForm()
+    }
+  })
+
+  selectAction.onchange = () => {
+    if (selectAction.value === 'force-delete') {
+      btnSubmitActionForm.setAttribute('type' , 'button')
+      btnSubmitActionForm.setAttribute('data-bs-toggle' , 'modal')
+      btnSubmitActionForm.setAttribute('data-bs-target' , '#forceDeleteModalMany')
+    } else {
+      btnSubmitActionForm.setAttribute('type' , 'submit')
+      btnSubmitActionForm.removeAttribute('data-bs-toggle')
+      btnSubmitActionForm.removeAttribute('data-bs-target')
+    }
+  }
+
   var id = ""
   if (restoreModal) { 
     restoreModal.addEventListener('show.bs.modal', event => { 
@@ -145,6 +238,10 @@
     const form = document.getElementById('confirm-ForceDelete')
     console.log(form)
     form.action = `/courses/force/${id}?_method=DELETE`
+    form.submit()
+  }
+
+  buttonForceDeleteManyCourse.onclick = () => {
     form.submit()
   }
 </script>
