@@ -11,30 +11,37 @@
       </tr>
     </thead>
     <tbody>
-      {{#each courses}}
-        <tr>
-          <th scope="row">{{sum @index 1}}</th>
-          <td>{{this.name}}</td>
-          <td>{{this.level}}</td>
-          <td>{{this.deletedAt}}</td>
-          <td>
-            <a 
-              type="submit"
-              class="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-id={{this._id}}
-              data-bs-target="#restoreModal"
-            >Khôi phục</a>
-            {{!-- <a
-              type="submit"
-              class="btn btn-danger"
-              data-bs-toggle="modal"
-              data-bs-id={{this._id}}
-              data-bs-target="#restoreModal"
-            >Xóa</a> --}}
-          </td>
-        </tr>
-      {{/each}}
+      {{#if courses.length}}
+        {{#each courses}}
+          <tr>
+            <th scope="row">{{sum @index 1}}</th>
+            <td>{{this.name}}</td>
+            <td>{{this.level}}</td>
+            <td>{{this.deletedAt}}</td>
+            <td>
+              <a 
+                type="submit"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-id={{this._id}}
+                data-bs-target="#restoreModal"
+              >Khôi phục</a>
+              <a
+                type="submit"
+                class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-id={{this._id}}
+                data-bs-target="#forceDeleteModal"
+              >Xóa vĩnh viễn</a>
+            </td>
+          </tr>
+        {{/each}}
+        {{else}}
+          <tr>
+            <td colspan="5" class="text-center">Sọt rác trống <a href="/courses/list">Danh sách khóa học</a></td>
+          </tr>
+      {{/if}}
+      
     </tbody>
   </table>
 </div>
@@ -73,18 +80,59 @@
   </div>
 </div>
 
+<div
+  class="modal fade"
+  id="forceDeleteModal"
+  tabindex="-1"
+  aria-labelledby="forceDeleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="forceDeleteModalLabel">Bạn sẽ xóa vĩnh viễn khóa học này ?</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>Khóa học sẽ được xóa khỏi hệ thống</p>
+      </div>
+      <div class="modal-footer">
+        <button id="forceDeleteCourse" type="button" class="btn btn-danger">Xóa</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-<form class="mt-4" id="confirm-Restore" method="POST" >
-</form>
+<form class="mt-4" id="confirm-Restore" method="POST" ></form>
+<form class="mt-4" id="confirm-ForceDelete" method="POST" ></form>
+
 <script>
   const restoreModal = document.getElementById('restoreModal') 
+  const forceDeleteModal = document.getElementById('forceDeleteModal')
   const buttonrestoreCourse = document.getElementById('restoreCourse')
+  const buttonforceDeleteCourse = document.getElementById('forceDeleteCourse')
   var id = ""
   if (restoreModal) { 
     restoreModal.addEventListener('show.bs.modal', event => { 
       const button = event.relatedTarget 
       id = button.getAttribute('data-bs-id')
       }) }
+  if (forceDeleteModal) {
+    forceDeleteModal.addEventListener('show.bs.modal', event => {
+      const button = event.relatedTarget
+      id = button.getAttribute('data-bs-id')
+    })
+  }
   buttonrestoreCourse.onclick = () => {
     console.log(id)
     const form = document.getElementById('confirm-Restore')
@@ -92,7 +140,11 @@
     form.action = `/courses/restore/${id}?_method=PATCH`
     form.submit()
   }
-
-  
-
+  buttonforceDeleteCourse.onclick = () => {
+    console.log(id)
+    const form = document.getElementById('confirm-ForceDelete')
+    console.log(form)
+    form.action = `/courses/force/${id}?_method=DELETE`
+    form.submit()
+  }
 </script>

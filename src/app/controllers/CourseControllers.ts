@@ -36,9 +36,15 @@ class CoursesControllers {
 
   //[GET] /courses/list
   list(req: Request, res: Response) {
-    Course.find().then((courses) =>
-      res.render('courses/list', { courses: mongooseToArr(courses) }),
-    )
+    Promise.all([
+      Course.find(),
+      Course.countDocumentsWithDeleted({ deleted: true }),
+    ]).then(([courses, deletedCount]) => {
+      res.render('courses/list', {
+        deletedCount,
+        courses: mongooseToArr(courses),
+      })
+    })
   }
 
   //[GET] /courses/:id/edit
@@ -65,6 +71,11 @@ class CoursesControllers {
       res.redirect('back')
       res.json()
     })
+  }
+
+  //[DELETE] /courses/force/:id
+  forceDelete(req: Request, res: Response) {
+    Course.deleteOne({ _id: req.params.id }).then(() => res.redirect('back'))
   }
 
   // [PATCH] /courses/:id/restore

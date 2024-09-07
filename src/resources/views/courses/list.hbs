@@ -1,6 +1,6 @@
 <div class="mt-4">
   <h1>Danh sách khoá học</h1>
-  <a href="/courses/trash" class="btn btn-primary">Thùng rác</a>
+  <a href="/courses/trash" class="btn btn-primary">Thùng rác ({{deletedCount}})</a>
   <table class="table mt-4">
     <thead>
       <tr>
@@ -91,7 +91,4 @@
     form.action = `/courses/${id}?_method=DELETE`
     form.submit()
   }
-
-  
-
 </script>
