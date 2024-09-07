@@ -7,14 +7,6 @@ type ReqRes = {
 }
 
 class SiteControllers {
-  // async homepage({ req, res, next }: ReqRes) {
-  //   Course.find({})
-  //     .then((courses) =>
-  //       res.render("home", { courses: mongooseToArr(courses) })
-  //     )
-  //     .catch(next);
-  // }
-
   homepage({ req, res, next }: ReqRes) {
     res.render('home')
   }

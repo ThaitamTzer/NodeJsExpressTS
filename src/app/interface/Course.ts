@@ -1,4 +1,5 @@
-interface ICourse {
+import { SoftDeleteDocument } from 'mongoose-delete'
+interface ICourse extends SoftDeleteDocument {
   name: string
   description: string
   image: string

@@ -2,9 +2,11 @@ import express from 'express'
 const router = express.Router()
 import coursesController from '../app/controllers/CourseControllers'
 
+router.get('/trash', coursesController.trash)
 router.get('/list', coursesController.list)
 router.get('/create', coursesController.create)
 router.post('/store', coursesController.store)
+router.patch('/restore/:id', coursesController.restore)
 router.delete('/:id', coursesController.delete)
 router.get('/:id/edit', coursesController.edit)
 router.put('/:id', coursesController.update)

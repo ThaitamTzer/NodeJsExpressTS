@@ -1,5 +1,6 @@
 <div class="mt-4">
   <h1>Danh sách khoá học</h1>
+  <a href="/courses/trash" class="btn btn-primary">Thùng rác</a>
   <table class="table mt-4">
     <thead>
       <tr>
@@ -10,24 +11,30 @@
       </tr>
     </thead>
     <tbody>
-      {{#each courses}}
-        <tr>
-          <th scope="row">{{sum @index 1}}</th>
-          <td>{{this.name}}</td>
-          <td>{{this.level}}</td>
-          <td>{{this.createdAt}}</td>
-          <td>
-            <a href="/courses/{{this._id}}/edit" class="btn btn-primary">Sửa</a>
-            <a
-              type="submit"
-              class="btn btn-danger"
-              data-bs-toggle="modal"
-              data-bs-id={{this._id}}
-              data-bs-target="#exampleModal"
-            >Xóa</a>
-          </td>
-        </tr>
-      {{/each}}
+      {{#if courses.length}}
+        {{#each courses}}
+          <tr>
+            <th scope="row">{{sum @index 1}}</th>
+            <td>{{this.name}}</td>
+            <td>{{this.level}}</td>
+            <td>{{this.createdAt}}</td>
+            <td>
+              <a href="/courses/{{this._id}}/edit" class="btn btn-primary">Sửa</a>
+              <a
+                type="submit"
+                class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-id={{this._id}}
+                data-bs-target="#exampleModal"
+              >Xóa</a>
+            </td>
+          </tr>
+        {{/each}}
+        {{else}}
+          <tr>
+            <td colspan="5" class="text-center">Không có khóa học nào <a href="/courses/create">Thêm khóa học >>>></a></td>
+          </tr>
+        {{/if}}
     </tbody>
   </table>
 </div>

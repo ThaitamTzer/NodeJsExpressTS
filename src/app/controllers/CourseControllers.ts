@@ -36,7 +36,7 @@ class CoursesControllers {
 
   //[GET] /courses/list
   list(req: Request, res: Response) {
-    Course.find({}).then((courses) =>
+    Course.find().then((courses) =>
       res.render('courses/list', { courses: mongooseToArr(courses) }),
     )
   }
@@ -61,7 +61,24 @@ class CoursesControllers {
 
   //[DELETE] /courses/:id
   delete(req: Request, res: Response) {
-    Course.deleteOne({ _id: req.params.id }).then(() => res.redirect('back'))
+    Course.delete({ _id: req.params.id }).then(() => {
+      res.redirect('back')
+      res.json()
+    })
+  }
+
+  // [PATCH] /courses/:id/restore
+  restore(req: Request, res: Response) {
+    Course.restore({ _id: req.params.id }).then(() => res.redirect('back'))
+  }
+
+  //[GET] /courses/trash
+  trash(req: Request, res: Response) {
+    Course.findWithDeleted({
+      deleted: true,
+    }).then((courses) =>
+      res.render('courses/trash', { courses: mongooseToArr(courses) }),
+    )
   }
 }
 

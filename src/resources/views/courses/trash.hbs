@@ -1,0 +1,98 @@
+<div class="mt-4">
+  <h1>Danh sách khoá học</h1>
+  <a href="/courses/list" class="btn btn-primary">Quay về trang chủ</a>
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Tên khoá học</th>
+        <th scope="col">Trình độ</th>
+        <th scope="col" colspan="2">Ngày xóa</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each courses}}
+        <tr>
+          <th scope="row">{{sum @index 1}}</th>
+          <td>{{this.name}}</td>
+          <td>{{this.level}}</td>
+          <td>{{this.deletedAt}}</td>
+          <td>
+            <a 
+              type="submit"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-id={{this._id}}
+              data-bs-target="#restoreModal"
+            >Khôi phục</a>
+            {{!-- <a
+              type="submit"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-id={{this._id}}
+              data-bs-target="#restoreModal"
+            >Xóa</a> --}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="restoreModal"
+  tabindex="-1"
+  aria-labelledby="restoreModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="restoreModalLabel">Bạn sẽ khôi phục khóa học này ?</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>Khóa học sẽ được khôi phục và hiển thị trên danh sách khóa học và trang chủ</p>
+      </div>
+      <div class="modal-footer">
+        <button id="restoreCourse" type="button" class="btn btn-primary">Khôi phục</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<form class="mt-4" id="confirm-Restore" method="POST" >
+</form>
+<script>
+  const restoreModal = document.getElementById('restoreModal') 
+  const buttonrestoreCourse = document.getElementById('restoreCourse')
+  var id = ""
+  if (restoreModal) { 
+    restoreModal.addEventListener('show.bs.modal', event => { 
+      const button = event.relatedTarget 
+      id = button.getAttribute('data-bs-id')
+      }) }
+  buttonrestoreCourse.onclick = () => {
+    console.log(id)
+    const form = document.getElementById('confirm-Restore')
+    console.log(form)
+    form.action = `/courses/restore/${id}?_method=PATCH`
+    form.submit()
+  }
+
+  
+
+</script>

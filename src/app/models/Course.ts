@@ -1,7 +1,7 @@
 import ICourse from '../interface/Course'
 import mongoose, { Schema } from 'mongoose'
 const slug = require('mongoose-slug-updater')
-mongoose.plugin(slug)
+import mongooseDelete, { SoftDeleteModel } from 'mongoose-delete'
 
 const CourseSchema = new Schema<ICourse>(
   {
@@ -17,4 +17,13 @@ const CourseSchema = new Schema<ICourse>(
   },
 )
 
-export const Course = mongoose.model<ICourse>('Course', CourseSchema)
+mongoose.plugin(slug)
+CourseSchema.plugin(mongooseDelete, {
+  overrideMethods: 'all',
+  deletedAt: true,
+})
+
+export const Course: SoftDeleteModel<ICourse> = mongoose.model<
+  ICourse,
+  SoftDeleteModel<ICourse>
+>('Course', CourseSchema)
